@@ -23,9 +23,14 @@ const FeedbackButtons = (props) => {
 const DisplayStats = (props) => {
   
   // create a list of div tags to display the values stored in the state
+    const feedbackList = props.stats.map( stat => <div key={ props.stats.indexOf(stat) }>{ stat.text }: { stat.value }</div>)
+    const [totalVotes, average, positive] = props.advancedStats
   return (
     <div>
-      {props.stats.map( stat => <div key={ props.stats.indexOf(stat) }>{ stat.text }: { stat.value }</div>)}
+      {feedbackList}
+      <div>totalVotes: {totalVotes}</div>
+      <div>average: {average}</div>
+      <div>positive: {positive}%</div>
     </div>
   )
 }
@@ -60,13 +65,16 @@ const App = () => {
                     {setter: () => handleClick('neutral'), text: 'neutral', value: neutral},
                     {setter: () => handleClick('bad'), text: 'bad', value: bad} ]
   
+  const totalVotes = good + neutral + bad
+  const average = (good - bad) / totalVotes
+  const positive = good / totalVotes * 100
 
   return (
     <div>
       <h1>Give Feedback</h1>
       <FeedbackButtons updateState={buttons} />
       <h2>Statistics</h2>
-      <DisplayStats stats={buttons} />
+      <DisplayStats stats={buttons} advancedStats={[totalVotes, average, positive]} />
     </div>
   )
 }
