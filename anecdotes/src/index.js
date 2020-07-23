@@ -17,7 +17,6 @@ const Anecdote = (props) => {
 }
 
 const DisplayAll = (props) => {
-  console.log(props)
   return(
     <>
       <h1>Anecdote of the day</h1>
@@ -35,12 +34,9 @@ const DisplayAll = (props) => {
 const App = () => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(6).fill(0))
-  console.log('selected', selected)
-  console.log('votes', votes)
-
+  
   const indexOfPopularNote =  votes.indexOf( Math.max(...votes) )
     
-
   const getAnecdoteIndex = () => {
     return () => {
       let randNum = Math.floor(Math.random() * Math.floor(anecdotes.length))
@@ -49,7 +45,6 @@ const App = () => {
   }
 
   const handleVote = () => {
-    console.log('votes is called')
     let copy = [...votes]
     copy[selected] += 1
     setVotes(copy)
