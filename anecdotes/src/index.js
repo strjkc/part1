@@ -1,11 +1,45 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const App = (props) => {
+const Buttons = (props) => {
+  return (
+    <>
+      <button onClick={props.handleClick[0]}>{props.text[0]}</button>
+      <button onClick={props.handleClick[1]()}>{props.text[1]}</button>
+    </>
+  )
+}
+
+const Anecdote = (props) => {
+  return (
+    <div>{props.anecdote}</div>
+  )
+}
+
+const DisplayAll = (props) => {
+  console.log(props)
+  return(
+    <>
+      <h1>Anecdote of the day</h1>
+      <Anecdote anecdote={anecdotes[props.object.selected]} />
+      <div>has: {props.object.votes[props.object.selected]} votes</div>
+      <Buttons handleClick={[props.object.handleVote, props.object.getAnecdoteIndex]} text={['Vote', 'Next anecdote']} />
+      <h1>Anecdote with most votes</h1>
+      <Anecdote anecdote={anecdotes[props.object.indexOfPopularNote]}/>
+      <div>has: {props.object.votes[props.object.indexOfPopularNote]} votes</div>
+    </>
+  )
+}
+
+
+const App = () => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(6).fill(0))
   console.log('selected', selected)
   console.log('votes', votes)
+
+  const indexOfPopularNote =  votes.indexOf( Math.max(...votes) )
+    
 
   const getAnecdoteIndex = () => {
     return () => {
@@ -21,12 +55,17 @@ const App = (props) => {
     setVotes(copy)
   }
 
+  const propObject = {
+    indexOfPopularNote: indexOfPopularNote,
+    selected: selected,
+    votes: votes,
+    handleVote: handleVote,
+    getAnecdoteIndex: getAnecdoteIndex
+  }
+
   return (
     <div>
-      {props.anecdotes[selected]}
-      <div>has: {votes[selected]} votes</div>
-      <button onClick={handleVote}>Vote</button>
-      <button onClick={ getAnecdoteIndex() }>Next anecdote</button>
+      <DisplayAll object = {propObject}  />
     </div>
   )
 }
